@@ -226,12 +226,11 @@ impl ServiceRequest {
         self.0.app_config()
     }
 
-    /// Get an application data stored with `App::data()` method during
-    /// application configuration.
-    pub fn app_data<T: 'static>(&self) -> Option<Data<T>> {
+    /// Counterpart to [`HttpRequest::app_data`](../struct.HttpRequest.html#method.app_data).
+    pub fn app_data<T: 'static>(&self) -> Option<&T> {
         for container in (self.0).0.app_data.iter().rev() {
-            if let Some(data) = container.get::<Data<T>>() {
-                return Some(Data::clone(&data));
+            if let Some(data) = container.get::<T>() {
+                return Some(data);
             }
         }
 
